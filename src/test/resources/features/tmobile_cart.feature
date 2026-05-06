@@ -1,5 +1,7 @@
 Feature: Buy phone without subscription
 
+  @smoke
+  @regression
   Scenario: Add device to cart and verify it
     Given the browser is opened
     And the user is on T-Mobile homepage
