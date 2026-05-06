@@ -1,68 +1,53 @@
-t-mobile-tests
-E2E tests for t-mobile.pl — Selenide + Cucumber + Java 21.
+# T-Mobile E2E Tests
 
-Requirements
-Java 21+
+End-to-end tests for t-mobile.pl written in Java with Selenide and Cucumber.
 
-Maven 3.6+
+Covers the add-to-cart flow for phones without a subscription plan — navigation, product page, cart price verification.
 
-Chrome (driver is managed automatically by Selenide)
+## Tech stack
 
-Live internet access (tests hit t-mobile.pl directly)
+- **Java 21**
+- **Selenide 7.2.3** — browser automation, handles ChromeDriver automatically
+- **Cucumber 7.16.1** — BDD framework
+- **JUnit 4** — test runner
+- **Maven** — build tool
 
-Running tests
-bash
-# run everything
+## Structure
+
+```
+src/test/
+├── java/
+│   ├── hooks/Hooks.java          # browser setup and teardown
+│   ├── pages/                    # Page Objects (HomePage, ProductPage, CartPage, ShopPage)
+│   ├── runner/CucumberRunner.java
+│   ├── steps/TmobileSteps.java   # step definitions
+│   └── utils/PriceUtils.java
+└── resources/features/
+    └── tmobile_cart.feature
+```
+
+## Running tests
+
+```bash
+# all tests
 mvn test
 
-# smoke only
+# filter by tag
 mvn test -Dcucumber.tags=@smoke
 
-# headless (e.g. on CI)
+# headless (no browser UI)
 mvn test -Dheadless=true
 
 # combined
 mvn test -Dcucumber.tags=@smoke -Dheadless=true
-Reports
-Generated in target/ after each run:
+```
 
-cucumber-report.html — open in a browser for a readable summary
+## Reports
 
-cucumber.json — use for CI integrations
+After a run:
+- HTML: `target/cucumber-report.html`
+- JSON: `target/cucumber.json`
 
-Structure
-text
-src/test/
-├── java/
-│   ├── hooks/          # browser setup + auto-screenshot on failure
-│   ├── pages/          # Page Objects (CartPage, HomePage, ProductPage, ShopPage)
-│   ├── steps/          # Cucumber step definitions
-│   ├── runner/         # CucumberRunner
-│   └── utils/          # PriceUtils — handles price strings from t-mobile.pl
-└── resources/
-    └── features/       # .feature files with BDD scenarios
-What's tested
-Single scenario (@smoke, @regression) covering the full add-to-cart flow for a phone without a subscription plan:
+## Page Objects
 
-Open homepage, accept cookies
-
-Navigate to Shop → Phones without subscription
-
-Open a product page (Xiaomi Redmi Note 15 Pro 5G)
-
-Add to cart
-
-Verify the cart price matches the price shown on the product page
-
-Go back to homepage, reopen cart
-
-Verify the device is still there
-
-A few things worth knowing
-No manual ChromeDriver setup needed — Selenide handles it
-
-On failure, a screenshot is automatically attached to the HTML report
-
-Tag filtering goes through -Dcucumber.tags, not through changes in the runner
-
-Browser configuration lives in Hooks.java, not scattered across Page Objects
+All selectors live in classes under `pages/`. Step definitions just call methods — no `$()` or `$$()` in steps.
