@@ -1,6 +1,8 @@
 package utils;
 
-public class PriceUtils {
+public final class PriceUtils {
+
+    private PriceUtils() {}
 
     public static int priceToInt(String priceText) {
         return Integer.parseInt(
