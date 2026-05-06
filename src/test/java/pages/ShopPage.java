@@ -11,8 +11,8 @@ public class ShopPage {
 
     public void selectNoSubscriptionPhones() {
 
-        $(".ODSGlobalHeaderMegaMenu-Container a[class*='phone'], .ODSGlobalHeaderMegaMenu-Container a[class*='Phone']")
-                .find(partialText("bez abonamentu"))
+        $$(".ODSGlobalHeaderMegaMenu-Container a")
+                .findBy(partialText("bez abonamentu"))
                 .shouldBe(visible, Duration.ofSeconds(10))
                 .click();
     }

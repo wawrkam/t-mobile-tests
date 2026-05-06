@@ -5,6 +5,7 @@ import java.time.Duration;
 import static com.codeborne.selenide.Condition.text;
 import static com.codeborne.selenide.Condition.visible;
 import static com.codeborne.selenide.Selenide.$;
+import static utils.PriceUtils.priceToInt;
 
 public class CartPage {
 
@@ -15,6 +16,7 @@ public class CartPage {
     }
 
     public void verifyPriceMatches(int expectedPrice) {
+        verifyCartPageVisible();
         String cartPriceText =
                 $("[data-qa='BKT_Price'] [data-qa='BKT_Amount'], [data-qa='BKT_TotalPrice'] [data-qa='BKT_Amount'], [class*='cart'] [class*='price']")
                         .shouldBe(visible, Duration.ofSeconds(15))
@@ -27,16 +29,6 @@ public class CartPage {
                     "Cena w koszyku (" + cartPrice + " zł) nie zgadza się z ceną produktu (" + expectedPrice + " zł)"
             );
         }
-    }
-
-    private int priceToInt(String priceText) {
-        return Integer.parseInt(
-                priceText
-                        .replace("\u00A0", "")
-                        .replace("zł", "")
-                        .replace(" ", "")
-                        .trim()
-        );
     }
 
     public void cartPageIsVisible() {
