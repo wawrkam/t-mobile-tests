@@ -17,12 +17,6 @@
 
     <dependencies>
         <dependency>
-            <groupId>org.seleniumhq.selenium</groupId>
-            <artifactId>selenium-java</artifactId>
-            <version>4.20.0</version>
-        </dependency>
-
-        <dependency>
             <groupId>com.codeborne</groupId>
             <artifactId>selenide</artifactId>
             <version>7.2.3</version>
@@ -32,6 +26,7 @@
             <groupId>io.cucumber</groupId>
             <artifactId>cucumber-java</artifactId>
             <version>7.16.1</version>
+            <scope>test</scope>
         </dependency>
 
         <dependency>
@@ -48,7 +43,7 @@
             <scope>test</scope>
         </dependency>
 
-        </dependencies>
+    </dependencies>
 
     <build>
         <plugins>
@@ -64,7 +59,7 @@
                 </configuration>
             </plugin>
 
-            </plugins>
+        </plugins>
     </build>
 
 </project>
