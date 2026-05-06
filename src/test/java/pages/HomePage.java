@@ -22,17 +22,19 @@ public class HomePage {
                 .shouldBe(visible, Duration.ofSeconds(10))
                 .click();
 
-        $(".didomi-popup-backdrop").should(disappear);
+        $(".didomi-popup-backdrop, .didomi-popup, [class*='didomi']")
+                .should(disappear, Duration.ofSeconds(5));
     }
 
     public void verifyHomepageVisible() {
-        $("body")
+        $("header[aria-label='Menu główne']")
                 .shouldBe(visible, Duration.ofSeconds(10));
 
     }
 
     public void openShopMenu() {
-        $("#didomi-popup").shouldNotBe(visible);
+        $("#didomi-popup, .didomi-overlay, [class*='didomi']")
+                .should(disappear, Duration.ofSeconds(3));
 
         $("header[aria-label='Menu główne']")
                 .find(withText("Sklep"))
@@ -42,18 +44,18 @@ public class HomePage {
 
     public void theDropdownIsVisible() {
 
-        $(".ODSGlobalHeaderMegaMenu-Container")
+        $(".ODSGlobalHeaderMegaMenu-Container, [class*='MegaMenu']")
                 .shouldBe(visible, Duration.ofSeconds(10));
     }
 
 
     public void returnToHomepage() {
-        $("img[alt='T-Mobile - przejdź na stronę główną']")
+        $("header[aria-label='Menu główne'] a, header[aria-label='Menu główne'] img")
                 .shouldBe(visible, Duration.ofSeconds(15))
                 .scrollIntoView(true)
                 .click();
 
-        $("body")
+        $("header[aria-label='Menu główne']")
                 .shouldBe(visible, Duration.ofSeconds(10));
     }
 

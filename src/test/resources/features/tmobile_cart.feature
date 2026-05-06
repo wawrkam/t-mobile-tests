@@ -13,7 +13,7 @@ Feature: Buy phone without subscription
     When the user clicks on device named "Xiaomi Redmi Note 15 Pro 5G"
     Then the product page for device "Xiaomi Redmi Note 15 Pro 5G" is displayed
 
-    When adds the device to the cart
+    When the user adds the device to the cart
     Then the cart page is displayed
     And the device price in cart matches the product price
 
