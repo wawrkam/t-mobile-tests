@@ -1,6 +1,5 @@
 package runner;
 
-import base.BaseTest;
 import io.cucumber.junit.Cucumber;
 import io.cucumber.junit.CucumberOptions;
 import org.junit.runner.RunWith;
@@ -17,8 +16,8 @@ import org.junit.runner.RunWith;
                 "html:target/cucumber-report.html",
                 "json:target/cucumber.json"
         },
-        tags = "@smoke",
+        tags = System.getProperty("tags", ""),
         monochrome = true
 )
-public class CucumberRunner extends BaseTest {
+public class CucumberRunner {
 }
