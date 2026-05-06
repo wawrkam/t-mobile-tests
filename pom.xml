@@ -56,6 +56,9 @@
                     <includes>
                         <include>**/*Runner.java</include>
                     </includes>
+                    <systemPropertyVariables>
+                        <cucumber.filter.tags>${cucumber.tags}</cucumber.filter.tags>
+                    </systemPropertyVariables>
                 </configuration>
             </plugin>
 
