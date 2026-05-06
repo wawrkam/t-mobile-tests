@@ -8,10 +8,9 @@ import java.time.Duration;
 import static com.codeborne.selenide.Condition.*;
 import static com.codeborne.selenide.Selenide.$;
 import static com.codeborne.selenide.Selenide.$$;
+import static utils.PriceUtils.priceToInt;
 
 public class ProductPage {
-
-    private int currentProductPrice;
 
     public void smartphoneListIsVisible() {
 
@@ -49,25 +48,10 @@ public class ProductPage {
                         .shouldBe(visible, Duration.ofSeconds(15))
                         .getText();
 
-        currentProductPrice = priceToInt(priceText);
-        return currentProductPrice;
+        return priceToInt(priceText);
     }
 
-    public int getSavedPrice() {
-        return currentProductPrice;
-    }
-
-    private int priceToInt(String priceText) {
-        return Integer.parseInt(
-                priceText
-                        .replace("\u00A0", "")
-                        .replace("zł", "")
-                        .replace(" ", "")
-                        .trim()
-        );
-    }
-
-    public void addToCartBySlug(String slug) {
+    public void addToCart() {
 
         $("[data-qa='PRD_AddToCart']")
                 .shouldBe(visible, Duration.ofSeconds(15))

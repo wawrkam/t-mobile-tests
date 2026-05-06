@@ -6,7 +6,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>pl.wsb</groupId>
-    <artifactId>study-program-tests</artifactId>
+    <artifactId>t-mobile-tests</artifactId>
     <version>1.0</version>
 
     <properties>
@@ -68,6 +68,12 @@
                         <include>**/*Runner.java</include>
                     </includes>
                 </configuration>
+            </plugin>
+
+            <plugin>
+                <groupId>net.masterthought</groupId>
+                <artifactId>cucumber-reporting</artifactId>
+                <version>5.8.1</version>
             </plugin>
 
         </plugins>
