@@ -9,28 +9,22 @@ import static com.codeborne.selenide.Selenide.$;
 public class CartPage {
 
     public void verifyCartPageVisible() {
-
         $("h1")
                 .shouldBe(visible, Duration.ofSeconds(15))
                 .shouldHave(text("Twój koszyk"));
     }
 
-    public void verifyPriceMatches() {
-
-        $("h1")
-                .shouldBe(visible, Duration.ofSeconds(15))
-                .shouldHave(text("Twój koszyk"));
-
+    public void verifyPriceMatches(int expectedPrice) {
         String cartPriceText =
-                $("span[data-qa='BKT_Activation']")
+                $("[data-qa='BKT_Price'] [data-qa='BKT_Amount'], [data-qa='BKT_TotalPrice'] [data-qa='BKT_Amount'], [class*='cart'] [class*='price']")
                         .shouldBe(visible, Duration.ofSeconds(15))
                         .getText();
 
         int cartPrice = priceToInt(cartPriceText);
 
-        if (cartPrice <= 0) {
+        if (cartPrice != expectedPrice) {
             throw new AssertionError(
-                    "Cena w koszyku jest nieprawidłowa: " + cartPriceText
+                    "Cena w koszyku (" + cartPrice + " zł) nie zgadza się z ceną produktu (" + expectedPrice + " zł)"
             );
         }
     }
@@ -38,6 +32,7 @@ public class CartPage {
     private int priceToInt(String priceText) {
         return Integer.parseInt(
                 priceText
+                        .replace("\u00A0", "")
                         .replace("zł", "")
                         .replace(" ", "")
                         .trim()
@@ -45,15 +40,11 @@ public class CartPage {
     }
 
     public void cartPageIsVisible() {
-
-        $("h1")
-                .shouldBe(visible, Duration.ofSeconds(15))
-                .shouldHave(text("Twój koszyk"));
+        verifyCartPageVisible();
     }
 
     public void verifyDeviceIsInCart(String deviceName) {
-
-        $("body")
+        $("[data-qa='BKT_ProductName'], [data-qa^='BKT_Item'] [data-qa='PRD_Name'], [data-qa='BKT_ProductList']")
                 .shouldHave(text(deviceName), Duration.ofSeconds(15));
     }
 }

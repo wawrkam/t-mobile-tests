@@ -9,13 +9,15 @@ import pages.HomePage;
 import pages.ProductPage;
 import pages.ShopPage;
 
-public class Tmobile {
+public class TmobileSteps {
 
-    HomePage homePage = new HomePage();
-    ShopPage shopPage = new ShopPage();
-    ProductPage productPage = new ProductPage();
-    CartPage cartPage = new CartPage();
+    private HomePage homePage = new HomePage();
+    private ShopPage shopPage = new ShopPage();
+    private ProductPage productPage = new ProductPage();
+    private CartPage cartPage = new CartPage();
+
     private String currentSlug;
+    private int savedProductPrice;
 
 
     @Given("the browser is opened")
@@ -23,7 +25,7 @@ public class Tmobile {
         homePage.open();
     }
 
-    @And("the user is on T-Mobile homepage")
+    @Given("the user is on T-Mobile homepage")
     public void theUserIsOnHomepage() {
         homePage.verifyHomepageVisible();
     }
@@ -38,8 +40,8 @@ public class Tmobile {
         homePage.theDropdownIsVisible();
     }
 
-    @When("selects \"No subscription\" from \"Smartphones\"")
-    public void selectNoSubscriptionPhones() {
+    @When("selects {string} from {string}")
+    public void selectNoSubscriptionPhones(String option, String category) {
         shopPage.selectNoSubscriptionPhones();
     }
 
@@ -53,7 +55,8 @@ public class Tmobile {
 
         currentSlug = deviceName
                 .toLowerCase()
-                .replace(" ", "-");
+                .replace(" ", "-")
+                .replaceAll("[^a-z0-9-]", "");
 
         productPage.openDeviceBySlug(currentSlug, deviceName);
     }
@@ -63,9 +66,9 @@ public class Tmobile {
         productPage.theProductPageForDeviceIsDisplayed(deviceName);
     }
 
-    @When("adds the device to the cart")
+    @When("the user adds the device to the cart")
     public void addDeviceToCart() {
-
+        savedProductPrice = productPage.getProductPrice();
         productPage.addToCartBySlug(currentSlug);
     }
 
@@ -76,7 +79,7 @@ public class Tmobile {
 
     @And("the device price in cart matches the product price")
     public void verifyPrice() {
-        cartPage.verifyPriceMatches();
+        cartPage.verifyPriceMatches(savedProductPrice);
     }
 
     @When("the user returns to the T-Mobile homepage")
@@ -92,7 +95,6 @@ public class Tmobile {
     @When("the user opens the cart")
     public void openTheCart() {
         homePage.openTheCart();
-
     }
 
     @Then("the cart page is visible")
@@ -102,7 +104,6 @@ public class Tmobile {
 
     @And("the cart contains the previously added device named {string}")
     public void theCartContainsThePreviouslyAddedDeviceNamed(String deviceName) {
-
         cartPage.verifyDeviceIsInCart(deviceName);
     }
 }

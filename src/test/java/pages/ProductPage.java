@@ -11,6 +11,8 @@ import static com.codeborne.selenide.Selenide.$$;
 
 public class ProductPage {
 
+    private int currentProductPrice;
+
     public void smartphoneListIsVisible() {
 
         $$("[data-qa^='LST_ProductCard']")
@@ -20,7 +22,7 @@ public class ProductPage {
 
     public void openDeviceBySlug(String slug, String deviceName) {
 
-        $("a[href*='" + slug + "']")
+        $("a[href*='" + slug.replace("'", "\\'") + "']")
                 .shouldBe(visible, Duration.ofSeconds(15))
                 .shouldBe(enabled)
                 .scrollIntoView(true)
@@ -43,16 +45,22 @@ public class ProductPage {
     public int getProductPrice() {
 
         String priceText =
-                $("span.actualText")
+                $("[data-qa='PRD_Price'] span")
                         .shouldBe(visible, Duration.ofSeconds(15))
                         .getText();
 
-        return priceToInt(priceText);
+        currentProductPrice = priceToInt(priceText);
+        return currentProductPrice;
+    }
+
+    public int getSavedPrice() {
+        return currentProductPrice;
     }
 
     private int priceToInt(String priceText) {
         return Integer.parseInt(
                 priceText
+                        .replace("\u00A0", "")
                         .replace("zł", "")
                         .replace(" ", "")
                         .trim()
@@ -61,11 +69,9 @@ public class ProductPage {
 
     public void addToCartBySlug(String slug) {
 
-        SelenideElement option =
-                $$("button")
-                        .filter(visible)
-                        .findBy(attributeMatching("data-qa", "PRD_.*"));
-
-        option.doubleClick();
+        $("[data-qa='PRD_AddToCart']")
+                .shouldBe(visible, Duration.ofSeconds(15))
+                .shouldBe(enabled)
+                .click();
     }
 }
